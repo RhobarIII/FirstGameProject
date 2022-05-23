@@ -5,24 +5,36 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     Rigidbody RocketRigidbody;
+    [SerializeField] float Power = 1000f;
+    [SerializeField] float RotationPower = 100f;
     void ProcessRotation()
     {
        
         if(Input.GetKey(KeyCode.A))
         {
-            Debug.Log("Rotate Left");
+            Rotation(-RotationPower);
         }
         else if(Input.GetKey(KeyCode.D))
         {
-            Debug.Log("Rotate right");
+            RocketRigidbody.freezeRotation = true;
+            Rotation(RotationPower);
+            RocketRigidbody.freezeRotation = false;
         }
+    }
+    void Rotation(float Thrust)
+    {
+        transform.Rotate(Vector3.left * Thrust * Time.deltaTime);
     }
     void ProcessThrust()
     {
         if (Input.GetKey(KeyCode.Space))
         {
+            
             Debug.Log("tHRUSTING");
-            RocketRigidbody.AddRelativeForce(Vector3.up);
+            Vector3 Direction = Vector3.up;
+            
+            
+            RocketRigidbody.AddRelativeForce(Direction * Power*Time.deltaTime);
         }
     }
     private void Start()
